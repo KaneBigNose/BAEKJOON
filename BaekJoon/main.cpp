@@ -1,39 +1,28 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
 
 int main()
 {
-	int t;
-	cin >> t;
-	for (int i = 0; i < t; i++)
+	int x;
+	cin >> x;
+	int count = 1;
+	int num = 1;
+	while (true)
 	{
-		vector<int> num1, num2;
-		int n, m;
-		cin >> n >> m;
-		unsigned long long result1 = 1, result2 = 1;
-		for (int j = 0; j < n; j++)
+		if (x - num == 0)
 		{
-			num1.push_back(m - j);
+			break;
 		}
-		for (int j = 0; j < n; j++)
+		if (x - num < 0)
 		{
-			num2.push_back(n - j);
+			x -= num / 2;
+			num = 1;
+			count++;
 		}
-		for (int j = 0; j < n; j++)
+		else
 		{
-			if (find(num1.begin(), num1.end(), n - j) != num1.end())
-			{
-				*find(num1.begin(), num1.end(), n - j) = 1;
-				*find(num2.begin(), num2.end(), n - j) = 1;
-			}
+			num *= 2;
 		}
-		for (int j = 0; j < n; j++)
-		{
-			result1 *= num1[j];
-			result2 *= num2[j];
-		}
-		cout << result1 / result2 << "\n";
 	}
+	cout << count;
 }
