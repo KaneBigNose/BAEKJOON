@@ -7,41 +7,36 @@ int main()
 {
 	int n;
 	cin >> n;
-	vector<int>* student = new vector<int>[n];
+	vector<string> word;
+	int count = 0;
 	for (int i = 0; i < n; i++)
 	{
-		for (int j = 0; j < 5; j++)
-		{
-			int temp;
-			cin >> temp;
-			student[i].push_back(temp);
-		}
+		string temp;
+		cin >> temp;
+		word.push_back(temp);
 	}
-	vector<int> score;
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < word.size(); i++)
 	{
-		score.push_back(0);
-	}
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
+		vector<char> check;
+		bool ok = true;
+		for (int j = 0; j < word[i].size(); j++)
 		{
-			for (int k = 0; k < 5; k++)
+			if (find(check.begin(), check.end(), word[i][j]) != check.end()) // 체크에 해당 단어가 있을 경우
 			{
-				if (student[i][k] == student[j][k])
+				if (j > 1)
 				{
-					score[i]++;
-					break;
+					if (check[j - 1] != word[i][j])
+					{
+						ok = false;
+					}
 				}
 			}
+			check.push_back(word[i][j]);
 		}
-	}
-	for (int i = 0; i < n; i++)
-	{
-		if (score[i] == *max_element(score.begin(), score.end()))
+		if (ok == true)
 		{
-			cout << i + 1;
-			break;
+			count++;
 		}
 	}
+	cout << count;
 }
