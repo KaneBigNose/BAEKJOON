@@ -5,45 +5,43 @@ using namespace std;
 
 int main()
 {
-	vector<string> words;
-	string word;
-	cin >> word;
-	for (int i = 0; i < word.size() - 1; i++)
+	int n;
+	cin >> n;
+	vector<int>* student = new vector<int>[n];
+	for (int i = 0; i < n; i++)
 	{
-		for (int j = i + 1; j < word.size() - 1; j++)
+		for (int j = 0; j < 5; j++)
 		{
-			int current = 0;
-			string temp;
-			string temp1, temp2, temp3;
-			for (int k = current; k <= i; k++)
-			{
-				temp1 += word[k];
-			}
-			current = i + 1;
-			for (int k = current; k <= j; k++)
-			{
-				temp2 += word[k];
-			}
-			current = j + 1;
-			for (int k = current; k <= word.size() - 1; k++)
-			{
-				temp3 += word[k];
-			}
-			for (int k = 0; k < temp1.size(); k++)
-			{
-				temp += temp1[temp1.size() - k - 1];
-			}
-			for (int k = 0; k < temp2.size(); k++)
-			{
-				temp += temp2[temp2.size() - k - 1];
-			}
-			for (int k = 0; k < temp3.size(); k++)
-			{
-				temp += temp3[temp3.size() - k - 1];
-			}
-			words.push_back(temp);
+			int temp;
+			cin >> temp;
+			student[i].push_back(temp);
 		}
 	}
-	sort(words.begin(), words.end());
-	cout << words[0];
+	vector<int> score;
+	for (int i = 0; i < n; i++)
+	{
+		score.push_back(0);
+	}
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			for (int k = 0; k < 5; k++)
+			{
+				if (student[i][k] == student[j][k])
+				{
+					score[i]++;
+					break;
+				}
+			}
+		}
+	}
+	for (int i = 0; i < n; i++)
+	{
+		if (score[i] == *max_element(score.begin(), score.end()))
+		{
+			cout << i + 1;
+			break;
+		}
+	}
 }
