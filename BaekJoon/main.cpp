@@ -1,31 +1,41 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
 
 int main()
 {
-	int n;
-	cin >> n;
-	vector<string> arr[51];
-	for (int i = 0; i < n; i++)
+	int x;
+	cin >> x;
+	int num[2] = { 1,1 };
+	int current = 1;
+	bool right = true;
+	for (int i = 0; i < x - 1; i++)
 	{
-		string temp;
-		cin >> temp;
-		if (find(arr[temp.size()].begin(), arr[temp.size()].end(), temp) == arr[temp.size()].end())
+		if (right == true) // 오른쪽 방향
 		{
-			arr[temp.size()].push_back(temp);
+			if (num[0] == 1) // 끝인 경우
+			{
+				num[1] += 1;
+				right = false;
+			}
+			else // 중간인 경우
+			{
+				num[1] += 1;
+				num[0] -= 1;
+			}
+		}
+		else // 왼쪽 방향
+		{
+			if (num[1] == 1) // 끝인 경우
+			{
+				num[0] += 1;
+				right = true;
+			}
+			else // 중간인 경우
+			{
+				num[0] += 1;
+				num[1] -= 1;
+			}
 		}
 	}
-	for (int i = 0; i < 51; i++)
-	{
-		sort(arr[i].begin(), arr[i].end());
-	}
-	for (int i = 0; i < 51; i++)
-	{
-		for (int j = 0; j < arr[i].size(); j++)
-		{
-			cout << arr[i][j] << "\n";
-		}
-	}
+	cout << num[0] << "/" << num[1];
 }
