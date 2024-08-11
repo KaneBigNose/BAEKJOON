@@ -1,41 +1,49 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 int main()
 {
-	int x;
-	cin >> x;
-	int num[2] = { 1,1 };
-	int current = 1;
-	bool right = true;
-	for (int i = 0; i < x - 1; i++)
+	vector<string> words;
+	string word;
+	cin >> word;
+	for (int i = 0; i < word.size() - 1; i++)
 	{
-		if (right == true) // 오른쪽 방향
+		for (int j = i + 1; j < word.size() - 1; j++)
 		{
-			if (num[0] == 1) // 끝인 경우
+			int current = 0;
+			string temp;
+			string temp1, temp2, temp3;
+			for (int k = current; k <= i; k++)
 			{
-				num[1] += 1;
-				right = false;
+				temp1 += word[k];
 			}
-			else // 중간인 경우
+			current = i + 1;
+			for (int k = current; k <= j; k++)
 			{
-				num[1] += 1;
-				num[0] -= 1;
+				temp2 += word[k];
 			}
-		}
-		else // 왼쪽 방향
-		{
-			if (num[1] == 1) // 끝인 경우
+			current = j + 1;
+			for (int k = current; k <= word.size() - 1; k++)
 			{
-				num[0] += 1;
-				right = true;
+				temp3 += word[k];
 			}
-			else // 중간인 경우
+			for (int k = 0; k < temp1.size(); k++)
 			{
-				num[0] += 1;
-				num[1] -= 1;
+				temp += temp1[temp1.size() - k - 1];
 			}
+			for (int k = 0; k < temp2.size(); k++)
+			{
+				temp += temp2[temp2.size() - k - 1];
+			}
+			for (int k = 0; k < temp3.size(); k++)
+			{
+				temp += temp3[temp3.size() - k - 1];
+			}
+			words.push_back(temp);
 		}
 	}
-	cout << num[0] << "/" << num[1];
+	sort(words.begin(), words.end());
+	cout << words[0];
 }
