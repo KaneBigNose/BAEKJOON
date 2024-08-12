@@ -1,42 +1,66 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
+
+void printAB(int& count)
+{
+	if (count == 0)
+	{
+		return;
+	}
+	if (count >= 4)
+	{
+		count -= 4;
+		cout << "AAAA";
+		printAB(count);
+	}
+	else
+	{
+		count -= 2;
+		cout << "BB";
+		printAB(count);
+	}
+}
 
 int main()
 {
-	int n;
-	cin >> n;
-	vector<string> word;
+	string poly;
+	cin >> poly;
 	int count = 0;
-	for (int i = 0; i < n; i++)
+	int check = 0;
+	for (int i = 0; i < poly.size(); i++)
 	{
-		string temp;
-		cin >> temp;
-		word.push_back(temp);
-	}
-	for (int i = 0; i < word.size(); i++)
-	{
-		vector<char> check;
-		bool ok = true;
-		for (int j = 0; j < word[i].size(); j++)
+		if (poly[i] == 'X')
 		{
-			if (find(check.begin(), check.end(), word[i][j]) != check.end()) // 체크에 해당 단어가 있을 경우
-			{
-				if (j > 1)
-				{
-					if (check[j - 1] != word[i][j])
-					{
-						ok = false;
-					}
-				}
-			}
-			check.push_back(word[i][j]);
+			check++;
 		}
-		if (ok == true)
+		if (poly[i] == '.' || i == poly.size() - 1)
+		{
+			if (check % 2 == 1)
+			{
+				cout << "-1";
+				return 0;
+			}
+			check = 0;
+		}
+	}
+	for (int i = 0; i < poly.size(); i++)
+	{
+		if (poly[i] == 'X')
 		{
 			count++;
 		}
+		if (poly[i] == '.' || i == poly.size() - 1)
+		{
+			printAB(count);
+			count = 0;
+			if (i != poly.size() - 1)
+			{
+				cout << ".";
+			}
+		}
 	}
-	cout << count;
+	if (*(poly.end() - 1) == '.')
+	{
+		cout << ".";
+	}
 }
