@@ -1,66 +1,42 @@
 #include <iostream>
+#include <vector>
+#include <string>
 using namespace std;
-
-void printAB(int& count)
-{
-	if (count == 0)
-	{
-		return;
-	}
-	if (count >= 4)
-	{
-		count -= 4;
-		cout << "AAAA";
-		printAB(count);
-	}
-	else
-	{
-		count -= 2;
-		cout << "BB";
-		printAB(count);
-	}
-}
 
 int main()
 {
-	string poly;
-	cin >> poly;
-	int count = 0;
-	int check = 0;
-	for (int i = 0; i < poly.size(); i++)
+	int senario = 1;
+	while (true)
 	{
-		if (poly[i] == 'X')
+		int n;
+		cin >> n;
+		if (n == 0)
 		{
-			check++;
+			break;
 		}
-		if (poly[i] == '.' || i == poly.size() - 1)
+		vector<string> name;
+		cin.ignore();
+		for (int i = 0; i < n; i++)
 		{
-			if (check % 2 == 1)
+			string temp;
+			getline(cin, temp);
+			name.push_back(temp);
+		}
+		vector<char>* AB = new vector<char>[n];
+		for (int i = 0; i < 2 * n - 1; i++)
+		{
+			int num;
+			char temp;
+			cin >> num >> temp;
+			AB[num - 1].push_back(temp);
+		}
+		for (int i = 0; i < n; i++)
+		{
+			if (AB[i].size() == 1)
 			{
-				cout << "-1";
-				return 0;
-			}
-			check = 0;
-		}
-	}
-	for (int i = 0; i < poly.size(); i++)
-	{
-		if (poly[i] == 'X')
-		{
-			count++;
-		}
-		if (poly[i] == '.' || i == poly.size() - 1)
-		{
-			printAB(count);
-			count = 0;
-			if (i != poly.size() - 1)
-			{
-				cout << ".";
+				cout << senario << " " << name[i] << "\n";
 			}
 		}
-	}
-	if (*(poly.end() - 1) == '.')
-	{
-		cout << ".";
+		senario++;
 	}
 }
