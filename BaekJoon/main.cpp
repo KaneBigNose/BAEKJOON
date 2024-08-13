@@ -1,58 +1,54 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 int main()
 {
-	int GroupNum = 1;
+	int n;
+	cin >> n;
+	vector<int> vote;
+	for (int i = 0; i < n; i++)
+	{
+		int temp;
+		cin >> temp;
+		vote.push_back(temp);
+	}
+	if (n == 1)
+	{
+		cout << "0";
+		return 0;
+	}
+	if (count(vote.begin(), vote.end(), *max_element(vote.begin(), vote.end())) == 1 && vote[0] == *max_element(vote.begin(), vote.end()))
+	{
+		cout << "0";
+		return 0;
+	}
+	int num = 0;
 	while (true)
 	{
-		bool everybody = true;
-		int n;
-		cin >> n;
-		if (n == 0)
+		bool bigger = true;
+		for (int i = 1; i < vote.size(); i++)
 		{
+			if (vote[0] <= vote[i])
+			{
+				bigger = false;
+			}
+		}
+		if (bigger == true)
+		{
+			cout << num;
 			break;
 		}
-		vector<string> name;
-		vector<char>* PN = new vector<char>[n];
-		for (int i = 0; i < n; i++)
+		num++;
+		vote[0]++;
+		for (int i = 1; i < vote.size(); i++)
 		{
-			string temp;
-			cin >> temp;
-			name.push_back(temp);
-			for (int j = 0; j < n - 1; j++)
+			if (vote[i] == *max_element(vote.begin(), vote.end()))
 			{
-				char message;
-				cin >> message;
-				PN[i].push_back(message);
+				vote[i]--;
+				break;
 			}
 		}
-		cout << "Group " << GroupNum << "\n";
-		for (int i = 0; i < n; i++)
-		{
-			for (int j = 0; j < n - 1; j++)
-			{
-				if (PN[i][j] == 'N')
-				{
-					if (i - (j + 1) < 0)
-					{
-						cout << name[i - (j + 1) + n] << " was nasty about ";
-					}
-					else
-					{
-						cout << name[i - (j + 1)] << " was nasty about ";
-					}
-					cout << name[i] << "\n";
-					everybody = false;
-				}
-			}
-		}
-		if (everybody == true)
-		{
-			cout << "Nobody was nasty\n";
-		}
-		cout << "\n";
-		GroupNum++;
 	}
 }
