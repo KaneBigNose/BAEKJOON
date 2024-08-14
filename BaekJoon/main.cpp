@@ -1,54 +1,90 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
 
 int main()
 {
-	int n;
-	cin >> n;
-	vector<int> vote;
+	int n, m;
+	cin >> n >> m;
+	string* line = new string[n];
+	int count[2] = { 0,0 };
 	for (int i = 0; i < n; i++)
 	{
-		int temp;
-		cin >> temp;
-		vote.push_back(temp);
+		cin >> line[i];
 	}
-	if (n == 1)
+	bool black = true;
+	for (int i = 0; i < n; i++)
 	{
-		cout << "0";
-		return 0;
-	}
-	if (count(vote.begin(), vote.end(), *max_element(vote.begin(), vote.end())) == 1 && vote[0] == *max_element(vote.begin(), vote.end()))
-	{
-		cout << "0";
-		return 0;
-	}
-	int num = 0;
-	while (true)
-	{
-		bool bigger = true;
-		for (int i = 1; i < vote.size(); i++)
+		for (int j = 0; j < m; j++)
 		{
-			if (vote[0] <= vote[i])
+			if (black == true && line[i][j] == 'W')
 			{
-				bigger = false;
+				count[0]++;
+			}
+			else if (black == false && line[i][j] == 'B')
+			{
+				count[0]++;
+			}
+			if (black == true)
+			{
+				black = false;
+			}
+			else
+			{
+				black = true;
 			}
 		}
-		if (bigger == true)
+		if (m % 2 == 0)
 		{
-			cout << num;
-			break;
-		}
-		num++;
-		vote[0]++;
-		for (int i = 1; i < vote.size(); i++)
-		{
-			if (vote[i] == *max_element(vote.begin(), vote.end()))
+			if (black == true)
 			{
-				vote[i]--;
-				break;
+				black = false;
+			}
+			else
+			{
+				black = true;
 			}
 		}
+	}
+	black = false;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			if (black == true && line[i][j] == 'W')
+			{
+				count[1]++;
+			}
+			else if (black == false && line[i][j] == 'B')
+			{
+				count[1]++;
+			}
+			if (black == true)
+			{
+				black = false;
+			}
+			else
+			{
+				black = true;
+			}
+		}
+		if (m % 2 == 0)
+		{
+			if (black == true)
+			{
+				black = false;
+			}
+			else
+			{
+				black = true;
+			}
+		}
+	}
+	if (count[0] <= count[1])
+	{
+		cout << count[0];
+	}
+	else
+	{
+		cout << count[1];
 	}
 }
