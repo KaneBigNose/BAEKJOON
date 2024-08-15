@@ -5,89 +5,27 @@ using namespace std;
 
 int main()
 {
-	int n, m;
-	cin >> n >> m;
-	string* line = new string[n];
-	vector<int> count;
+	int n;
+	cin >> n;
+	vector<int> A, B;
+	int sum = 0;
 	for (int i = 0; i < n; i++)
 	{
-		cin >> line[i];
+		int temp;
+		cin >> temp;
+		A.push_back(temp);
 	}
-	for (int i = 0; i < 2 * (n - 7) * (m - 7); i++)
+	for (int i = 0; i < n; i++)
 	{
-		count.push_back(0);
+		int temp;
+		cin >> temp;
+		B.push_back(temp);
 	}
-	bool black;
-	int up = 0;
-	for (int a = 0; a < n - 7; a++)
+	sort(A.begin(), A.end(), less<>());
+	sort(B.begin(), B.end(), greater<>());
+	for (int i = 0; i < n; i++)
 	{
-		for (int b = 0; b < m - 7; b++)
-		{
-			black = true;
-			for (int i = a; i < a + 8; i++)
-			{
-				for (int j = b; j < b + 8; j++)
-				{
-					if (black == true && line[i][j] == 'W')
-					{
-						count[up]++;
-					}
-					else if (black == false && line[i][j] == 'B')
-					{
-						count[up]++;
-					}
-					if (black == true)
-					{
-						black = false;
-					}
-					else
-					{
-						black = true;
-					}
-				}
-				if (black == true)
-				{
-					black = false;
-				}
-				else
-				{
-					black = true;
-				}
-			}
-			up++;
-			black = false;
-			for (int i = a; i < a + 8; i++)
-			{
-				for (int j = b; j < b + 8; j++)
-				{
-					if (black == true && line[i][j] == 'W')
-					{
-						count[up]++;
-					}
-					else if (black == false && line[i][j] == 'B')
-					{
-						count[up]++;
-					}
-					if (black == true)
-					{
-						black = false;
-					}
-					else
-					{
-						black = true;
-					}
-				}
-				if (black == true)
-				{
-					black = false;
-				}
-				else
-				{
-					black = true;
-				}
-			}
-			up++;
-		}
+		sum += A[i] * B[i];
 	}
-	cout << *min_element(count.begin(), count.end());
+	cout << sum;
 }
