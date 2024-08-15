@@ -1,55 +1,55 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
 
 int main()
 {
-	int n, m;
-	cin >> n >> m;
-	vector<int> package, single;
-	vector<int> price;
-	for (int i = 0; i < m; i++)
-	{
-		int temp1, temp2;
-		cin >> temp1 >> temp2;
-		package.push_back(temp1);
-		single.push_back(temp2);
-	}
-	sort(package.begin(), package.end(), less<>());
-	sort(single.begin(), single.end(), less<>());
-	int num = n;
-	int sum = 0;
+	int n, kim, lim;
+	cin >> n >> kim >> lim;
+	int round = 1;
 	while (true)
 	{
-		if (num <= 0)
+		if (kim == n && n % 2 == 1)
 		{
-			price.push_back(sum);
+			goto A;
+		}
+		else if (lim == n && n % 2 == 1)
+		{
+			goto A;
+		}
+		if (kim % 2 == 1 && kim + 1 == lim)
+		{
 			break;
 		}
-		sum += package[0];
-		num -= 6;
-	}
-	num = n;
-	sum = 0;
-	while(true)
-	{
-		if (num <= 0)
+		else if (kim % 2 == 0 && kim - 1 == lim)
 		{
-			price.push_back(sum);
 			break;
 		}
-		if (num >= 6)
+	A:
+		if (kim % 2 == 1)
 		{
-			sum += package[0];
-			num -= 6;
+			kim = kim / 2 + 1;
 		}
-		else if (num > 0 && num < 6)
+		else
 		{
-			sum += single[0];
-			num -= 1;
+			kim = kim / 2;
 		}
+		if (lim % 2 == 1)
+		{
+			lim = lim / 2 + 1;
+		}
+		else
+		{
+			lim = lim / 2;
+		}
+		if (n % 2 == 1)
+		{
+			n = n / 2 + 1;
+		}
+		else
+		{
+			n = n / 2;
+		}
+		round++;
 	}
-	price.push_back(single[0] * n);
-	cout << *min_element(price.begin(), price.end());
+	cout << round;
 }
