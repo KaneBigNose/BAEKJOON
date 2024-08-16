@@ -1,57 +1,45 @@
 #include <iostream>
+#include <cmath>
 #include <vector>
 #include <algorithm>
 using namespace std;
 
 int main()
 {
-	int l, n;
-	cin >> l;
-	vector<int> s;
-	for (int i = 0; i < l; i++)
+	double a[2], b[2], c[2]; // 세 점
+	cin >> a[0] >> a[1] >> b[0] >> b[1] >> c[0] >> c[1];
+	double ab, bc, ca; // 기울기
+	ab = (a[1] - b[1]) / (a[0] - b[0]);
+	bc = (b[1] - c[1]) / (b[0] - c[0]);
+	ca = (a[1] - c[1]) / (a[0] - c[0]);
+	if (ab == bc && bc == ca)
 	{
-		int temp;
-		cin >> temp;
-		s.push_back(temp);
+		cout << "-1";
+		return 0;
 	}
-	cin >> n;
-	sort(s.begin(), s.end());
-	int first, last, count = 0;
-	for (int i = 0; i < l; i++)
+	vector<double> x, y;
+	double sangsuAB = c[1] - ab * c[0];
+	double sangsuBC = a[1] - bc * a[0];
+	double sangsuCA = b[1] - ca * b[0];
+	x.push_back((sangsuBC - sangsuAB) / (ab - bc)); // ab와 bc의 교집합
+	x.push_back((sangsuCA - sangsuBC) / (bc - ca)); // bc와 ac의 교집합
+	x.push_back((sangsuCA - sangsuAB) / (ca - ab)); // ab와 ac의 교집합
+	y.push_back(ab * x[0] + sangsu1); // ab의 기울기에 c를 지남
+	y.push_back(ca * x[1] + sangsu2); // ab의 기울기에 c를 지남
+	y.push_back(bc * x[2] + sangsu3); // ab의 기울기에 c를 지남
+	for (int i = 0; i < 3; i++)
 	{
-		if (n == s[i])
-		{
-			cout << "0";
-			return 0;
-		}
-		else if (n < s[i])
-		{
-			if (n < s[0]) // n이 집합의 원소들보다 작을 경우
-			{
-				first = 1;
-			}
-			else if (i - 1 <= 0)
-			{
-				first = s[0] + 1;
-			}
-			else
-			{
-				first = s[i - 1] + 1;
-			}
-			last = s[i] - 1;
-			break;
-		}
+		cout << x[i] << " " << y[i] << "\n";
 	}
-	for (int i = first; i <= n; i++)
+	vector<double> length;
+	for (int i = 0; i < 3; i++)
 	{
-		for (int j = n; j <= last; j++)
-		{
-			count++;
-		}
+		int sum = 0;
+		sum += sqrt(pow(a[0] - b[0], 2) + pow(a[1] - b[1], 2)); // ab의 길이
+		sum += sqrt(pow(b[0] - c[0], 2) + pow(b[1] - c[1], 2)); // bc의 길이
+		sum += sqrt(pow(c[0] - x[0], 2) + pow(c[1] - y[1], 2)); // cd의 길이
+		sum += sqrt(pow(x[0] - a[0], 2) + pow(y[1] - a[1], 2)); // da의 길이
+		length.push_back(sum);
 	}
-	if (l != 1) // [n, n] 구간이 발생하여 이를 제외
-	{
-		count--;
-	}
-	cout << count;
+	cout << *max_element(length.begin(), length.end()) - *min_element(length.begin(), length.end());
 }
