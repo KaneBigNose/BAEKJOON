@@ -5,43 +5,37 @@ using namespace std;
 
 int main()
 {
-	int n, k;
-	cin >> n >> k;
-	vector<int> arr;
-	int current = k;
-	int count = 0;
-	arr.push_back(k);
+	int n;
+	cin >> n;
+	vector<string> num;
+	for (int i = 0; i < n; i++)
+	{
+		string temp;
+		cin >> temp;
+		num.push_back(temp);
+		reverse(num[i].begin(), num[i].end());
+	}
+	int current = 0;
+	int size = num[0].size();
 	while (true)
 	{
-		if (arr.size() == n)
+		if (num[0].size() == 0)
 		{
+			cout << "1";
 			break;
 		}
-		if (current + 1 > n)
+		for (int i = 0; i < n; i++)
 		{
-			current = 1;
-		}
-		else
-		{
-			current++;
-		}
-		if (find(arr.begin(), arr.end(), current) == arr.end())
-		{
-			count++;
-		}
-		if (count >= k)
-		{
-			if (find(arr.begin(), arr.end(), current) == arr.end())
+			if (count(num.begin(), num.end(), num[i]) > 1)
 			{
-				arr.push_back(current);
-				count = 0;
+				cout << size - current + 1;
+				return 0;
 			}
 		}
+		for (int i = 0; i < n; i++)
+		{
+			num[i].pop_back();
+		}
+		current++;
 	}
-	cout << "<";
-	for (int i = 0; i < n - 1; i++)
-	{
-		cout << arr[i] << ", ";
-	}
-	cout << *(arr.end() - 1) << ">";
 }
