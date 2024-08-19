@@ -5,41 +5,37 @@ using namespace std;
 
 int main()
 {
-	int n, m;
-	cin >> n >> m;
-	vector<int> wantprice;
-	vector<int> sellprice;
-	for (int i = 0; i < m; i++)
+	int anum, bnum;
+	cin >> anum >> bnum;
+	vector<int> a, b;
+	int ab = 0, ba = 0;
+	for (int i = 0; i < anum; i++)
 	{
 		int temp;
 		cin >> temp;
-		wantprice.push_back(temp);
+		a.push_back(temp);
 	}
-	sort(wantprice.begin(), wantprice.end(), less<>());
-	for (int i = 0; i < wantprice.size(); i++)
+	for (int i = 0; i < bnum; i++)
 	{
-		if (n >= m) // 달걀의 개수가 사람보다 많거나 같을 경우
-		{
-			sellprice.push_back((wantprice.size() - i) * wantprice[i]);
-		}
-		else // 달걀의 개수가 사람보다 적은 경우
-		{
-			if (m - i < n)
-			{
-				sellprice.push_back((m - i) * wantprice[i]);
-			}
-			else
-			{
-				sellprice.push_back(n * wantprice[i]);
-			}
-		}
+		int temp;
+		cin >> temp;
+		b.push_back(temp);
 	}
-	for (int i = 0; i < sellprice.size(); i++)
+	sort(a.begin(), a.end(), less<>());
+	sort(b.begin(), b.end(), less<>());
+	for (int i = 0; i < a.size(); i++)
 	{
-		if (sellprice[i] == *max_element(sellprice.begin(), sellprice.end()))
+		if (find(b.begin(), b.end(), a[i]) == b.end())
 		{
-			cout << wantprice[i] << " " << sellprice[i];
-			break;
+			ab++;
 		}
 	}
+	for (int i = 0; i < b.size(); i++)
+	{
+		if (find(a.begin(), a.end(), b[i]) == a.end())
+		{
+			ba++;
+		}
+	}
+	cout << ab + ba;
 }
