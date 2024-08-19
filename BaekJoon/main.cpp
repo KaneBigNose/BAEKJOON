@@ -59,6 +59,10 @@ int main()
 						ChangeSwitch(switchNum, num - j - 1);
 						ChangeSwitch(switchNum, num + j - 1);
 					}
+					else
+					{
+						break;
+					}
 				}
 				else
 				{
