@@ -1,105 +1,45 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
-
-void ChangeSwitch(vector<int>& switchNum, int num)
-{
-	if (switchNum[num] == 0)
-	{
-		switchNum[num] = 1;
-	}
-	else
-	{
-		switchNum[num] = 0;
-	}
-}
 
 int main()
 {
-	int n;
-	cin >> n;
-	vector<int> switchNum;
-	for (int i = 0; i < n; i++)
+	int n, m;
+	cin >> n >> m;
+	vector<int> wantprice;
+	vector<int> sellprice;
+	for (int i = 0; i < m; i++)
 	{
 		int temp;
 		cin >> temp;
-		switchNum.push_back(temp);
+		wantprice.push_back(temp);
 	}
-	cin >> n;
-	for (int i = 0; i < n; i++)
+	sort(wantprice.begin(), wantprice.end(), less<>());
+	for (int i = 0; i < wantprice.size(); i++)
 	{
-		int gender, num;
-		cin >> gender >> num;
-		if (gender == 1) // 남성
+		if (n >= m) // 달걀의 개수가 사람보다 많거나 같을 경우
 		{
-			int j = 1;
-			while (true)
-			{
-				if (num * j <= switchNum.size())
-				{
-					ChangeSwitch(switchNum, num * j - 1);
-					j++;
-				}
-				else
-				{
-					break;
-				}
-			}
+			sellprice.push_back((wantprice.size() - i) * wantprice[i]);
 		}
-		else // 여성
+		else // 달걀의 개수가 사람보다 적은 경우
 		{
-			ChangeSwitch(switchNum, num - 1);
-			int j = 1;
-			while (true)
+			if (m - i < n)
 			{
-				if (num - j - 1 >= 0 && num + j - 1 < switchNum.size())
-				{
-					if (switchNum[num - j - 1] == switchNum[num + j - 1])
-					{
-						ChangeSwitch(switchNum, num - j - 1);
-						ChangeSwitch(switchNum, num + j - 1);
-					}
-					else
-					{
-						break;
-					}
-				}
-				else
-				{
-					break;
-				}
-				j++;
+				sellprice.push_back((m - i) * wantprice[i]);
+			}
+			else
+			{
+				sellprice.push_back(n * wantprice[i]);
 			}
 		}
 	}
-	if (switchNum.size() <= 20)
+	for (int i = 0; i < sellprice.size(); i++)
 	{
-		for (int i = 0; i < switchNum.size(); i++)
+		if (sellprice[i] == *max_element(sellprice.begin(), sellprice.end()))
 		{
-			cout << switchNum[i] << " ";
-		}
-	}
-	else
-	{
-		int j = 0;
-		int k = 1;
-		while (true)
-		{
-			if (k * 20 > switchNum.size())
-			{
-				for (int i = j; i < switchNum.size(); i++)
-				{
-					cout << switchNum[i] << " ";
-				}
-				break;
-			}
-			for (int i = j; i < k * 20; i++)
-			{
-				cout << switchNum[i] << " ";
-			}
-			j = k * 20;
-			k++;
-			cout << "\n";
+			cout << wantprice[i] << " " << sellprice[i];
+			break;
 		}
 	}
 }
