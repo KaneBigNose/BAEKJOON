@@ -5,37 +5,27 @@ using namespace std;
 
 int main()
 {
-	int anum, bnum;
-	cin >> anum >> bnum;
-	vector<int> a, b;
-	int ab = 0, ba = 0;
-	for (int i = 0; i < anum; i++)
+	int n;
+	cin >> n;
+	vector<string> bestseller;
+	for (int i = 0; i < n; i++)
 	{
-		int temp;
+		string temp;
 		cin >> temp;
-		a.push_back(temp);
+		bestseller.push_back(temp);
 	}
-	for (int i = 0; i < bnum; i++)
+	sort(bestseller.begin(), bestseller.end(), less<>());
+	vector<int> selling;
+	for (int i = 0; i < n; i++)
 	{
-		int temp;
-		cin >> temp;
-		b.push_back(temp);
+		selling.push_back(count(bestseller.begin(), bestseller.end(), bestseller[i]));
 	}
-	sort(a.begin(), a.end(), less<>());
-	sort(b.begin(), b.end(), less<>());
-	for (int i = 0; i < a.size(); i++)
+	for (int i = 0; i < n; i++)
 	{
-		if (find(b.begin(), b.end(), a[i]) == b.end())
+		if (selling[i] == *max_element(selling.begin(), selling.end()))
 		{
-			ab++;
+			cout << bestseller[i];
+			break;
 		}
 	}
-	for (int i = 0; i < b.size(); i++)
-	{
-		if (find(a.begin(), a.end(), b[i]) == a.end())
-		{
-			ba++;
-		}
-	}
-	cout << ab + ba;
 }
