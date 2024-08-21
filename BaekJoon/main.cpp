@@ -1,39 +1,36 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <cmath>
 using namespace std;
 
 int main()
 {
-	int n;
-	cin >> n;
-	vector<int> arr;
-	for (int i = 0; i < n; i++)
+	int W, H, X, Y, P;
+	cin >> W >> H >> X >> Y >> P;
+	vector<int> px, py;
+	for (int i = 0; i < P; i++)
 	{
-		int temp;
-		cin >> temp;
-		arr.push_back(temp);
+		int x, y;
+		cin >> x >> y;
+		px.push_back(x);
+		py.push_back(y);
 	}
-	sort(arr.begin(), arr.end(), less<>());
-	vector<int> smooth;
-	for (int i = 0; i < n; i++)
+	int countP = 0;
+	for (int i = 0; i < P; i++)
 	{
-		int count = 1;
-		for (int j = 1; j < 5; j++)
+		if (px[i] >= X && px[i] <= X + W && py[i] >= Y && py[i] <= Y + H) // 직사각형 내에 있는 경우
 		{
-			if (find(arr.begin(), arr.end(), arr[i] + j) != arr.end())
-			{
-				count++;
-			}
+			countP++;
 		}
-		smooth.push_back(count);
+		else if (pow(X - px[i], 2) + pow((Y + H / 2) - py[i], 2) <= pow(H / 2, 2)) // 왼쪽 반원에 있는 경우
+		{
+			countP++;
+		}
+		else if (pow((X + W) - px[i], 2) + pow((Y + H / 2) - py[i], 2) <= pow(H / 2, 2)) // 오른쪽 반원에 있는 경우
+		{
+			countP++;
+		}
 	}
-	if (*max_element(smooth.begin(), smooth.end()) == 5)
-	{
-		cout << "0";
-	}
-	else
-	{
-		cout << 5 - *max_element(smooth.begin(), smooth.end());
-	}
+	cout << countP;
 }
