@@ -1,36 +1,57 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
-#include <cmath>
 using namespace std;
+
+int needWood = 0;
+
+void Check(vector<string>& arr, int column, int row)
+{
+	if (row + 1 < arr[0].size() && arr[column][row] == '-' && arr[column][row + 1] == '-')
+	{
+		if (row + 1 < arr[0].size() - 1)
+		{
+			Check(arr, column, row + 1);
+		}
+		else if (row + 1 == arr[0].size() - 1)
+		{
+			arr[column][row + 1] = 'X';
+			needWood++;
+		}
+	}
+	else if (column + 1 < arr.size() && arr[column][row] == '|' && arr[column + 1][row] == '|')
+	{
+		if (column + 1 < arr.size() - 1)
+		{
+			Check(arr, column + 1, row);
+		}
+		else if (column + 1 == arr.size() - 1)
+		{
+			arr[column][row + 1] = 'X';
+			needWood++;
+		}
+	}
+	arr[column][row] = 'X';
+}
 
 int main()
 {
-	int W, H, X, Y, P;
-	cin >> W >> H >> X >> Y >> P;
-	vector<int> px, py;
-	for (int i = 0; i < P; i++)
+	int n, m; // 세로 가로
+	cin >> n >> m;
+	vector<string> arr;
+	for (int i = 0; i < n; i++)
 	{
-		int x, y;
-		cin >> x >> y;
-		px.push_back(x);
-		py.push_back(y);
+		string temp;
+		cin >> temp;
+		arr.push_back(temp);
 	}
-	int countP = 0;
-	for (int i = 0; i < P; i++)
+	for (int i = 0; i < n; i++)
 	{
-		if (px[i] >= X && px[i] <= X + W && py[i] >= Y && py[i] <= Y + H) // 직사각형 내에 있는 경우
+		for (int j = 0; j < m; j++)
 		{
-			countP++;
+			Check(arr, i, j);
+			cout << arr[i][j];
 		}
-		else if (pow(X - px[i], 2) + pow((Y + H / 2) - py[i], 2) <= pow(H / 2, 2)) // 왼쪽 반원에 있는 경우
-		{
-			countP++;
-		}
-		else if (pow((X + W) - px[i], 2) + pow((Y + H / 2) - py[i], 2) <= pow(H / 2, 2)) // 오른쪽 반원에 있는 경우
-		{
-			countP++;
-		}
+		cout << "\n";
 	}
-	cout << countP;
+	cout << needWood;
 }
