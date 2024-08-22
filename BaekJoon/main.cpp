@@ -4,33 +4,36 @@ using namespace std;
 
 int needWood = 0;
 
-void Check(vector<string>& arr, int column, int row)
+void CheckRow(vector<string>& arr, int column, int row)
 {
-	if (row + 1 < arr[0].size() && arr[column][row] == '-' && arr[column][row + 1] == '-')
+	if (arr[column][row] == '-') // 현재 값이 "-"인 경우
 	{
-		if (row + 1 < arr[0].size() - 1)
+		arr[column][row] = 'X';
+		if (row + 1 < arr[0].size() && arr[column][row + 1] == '-') // 다음 값이 "-"인 경우
 		{
-			Check(arr, column, row + 1);
+			CheckRow(arr, column, row + 1);
 		}
-		else if (row + 1 == arr[0].size() - 1)
+		else // 다음 값이 "|"이거나 "X"이거나 값이 없는 경우
 		{
-			arr[column][row + 1] = 'X';
 			needWood++;
 		}
 	}
-	else if (column + 1 < arr.size() && arr[column][row] == '|' && arr[column + 1][row] == '|')
+}
+
+void CheckColumn(vector<string>& arr, int column, int row)
+{
+	if (arr[column][row] == '|') // 현재 값이 "-"인 경우
 	{
-		if (column + 1 < arr.size() - 1)
+		arr[column][row] = 'X';
+		if (column + 1 < arr.size() && arr[column + 1][row] == '|') // 다음 값이 "|"인 경우
 		{
-			Check(arr, column + 1, row);
+			CheckRow(arr, column, row + 1);
 		}
-		else if (column + 1 == arr.size() - 1)
+		else // 다음 값이 "-"이거나 "X"이거나 값이 없는 경우
 		{
-			arr[column][row + 1] = 'X';
 			needWood++;
 		}
 	}
-	arr[column][row] = 'X';
 }
 
 int main()
@@ -48,10 +51,9 @@ int main()
 	{
 		for (int j = 0; j < m; j++)
 		{
-			Check(arr, i, j);
-			cout << arr[i][j];
+			CheckRow(arr, i, j);
+			CheckColumn(arr, i, j);
 		}
-		cout << "\n";
 	}
 	cout << needWood;
 }
