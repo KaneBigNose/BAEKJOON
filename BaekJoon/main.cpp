@@ -1,59 +1,31 @@
 #include <iostream>
-#include <vector>
+#include <string>
+#include <cmath>
 using namespace std;
-
-int needWood = 0;
-
-void CheckRow(vector<string>& arr, int column, int row)
-{
-	if (arr[column][row] == '-') // 현재 값이 "-"인 경우
-	{
-		arr[column][row] = 'X';
-		if (row + 1 < arr[0].size() && arr[column][row + 1] == '-') // 다음 값이 "-"인 경우
-		{
-			CheckRow(arr, column, row + 1);
-		}
-		else // 다음 값이 "|"이거나 "X"이거나 값이 없는 경우
-		{
-			needWood++;
-		}
-	}
-}
-
-void CheckColumn(vector<string>& arr, int column, int row)
-{
-	if (arr[column][row] == '|') // 현재 값이 "-"인 경우
-	{
-		arr[column][row] = 'X';
-		if (column + 1 < arr.size() && arr[column + 1][row] == '|') // 다음 값이 "|"인 경우
-		{
-			CheckRow(arr, column, row + 1);
-		}
-		else // 다음 값이 "-"이거나 "X"이거나 값이 없는 경우
-		{
-			needWood++;
-		}
-	}
-}
 
 int main()
 {
-	int n, m; // 세로 가로
-	cin >> n >> m;
-	vector<string> arr;
-	for (int i = 0; i < n; i++)
+	string n;
+	cin >> n;
+	int sum = 0;
+	if (n.size() == 1)
 	{
-		string temp;
-		cin >> temp;
-		arr.push_back(temp);
+		sum += stoi(n);
 	}
-	for (int i = 0; i < n; i++)
+	if (n.size() >= 2)
 	{
-		for (int j = 0; j < m; j++)
+		sum += 9;
+		for (int i = 2; i <= n.size(); i++)
 		{
-			CheckRow(arr, i, j);
-			CheckColumn(arr, i, j);
+			if (n.size() > i)
+			{
+				sum += i * (pow(10, i) - 1 - pow(10, i - 1) + 1);
+			}
+			else if (n.size() == i)
+			{
+				sum += i * (stoi(n) - pow(10, i - 1) + 1);
+			}
 		}
 	}
-	cout << needWood;
+	cout << sum;
 }
