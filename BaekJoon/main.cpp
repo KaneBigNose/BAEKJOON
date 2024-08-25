@@ -1,42 +1,80 @@
 #include <iostream>
 #include <vector>
-#include <cmath>
 using namespace std;
+
+void MoveLeft(vector<int>& arr)
+{
+	int temp = arr[0];
+	for (int i = 0; i < arr.size() - 1; i++)
+	{
+		arr[i] = arr[i + 1];
+	}
+	*(arr.end() - 1) = temp;
+}
+
+void MoveRight(vector<int>& arr)
+{
+	int temp = *(arr.end() - 1);
+	for (int i = arr.size() - 1; i > 0; i--)
+	{
+		arr[i] = arr[i - 1];
+	}
+	arr[0] = temp;
+}
+
+void PopFront(vector<int>& arr)
+{
+	for (int i = 0; i < arr.size() - 1; i++)
+	{
+		arr[i] = arr[i + 1];
+	}
+	arr.pop_back();
+}
 
 int main()
 {
-	int t; // 테스트 케이스
-	cin >> t;
-	for (int i = 0; i < t; i++)
+	int n, m;
+	cin >> n >> m;
+	vector<int> arr;
+	for (int i = 0; i < n; i++)
 	{
-		int x1, y1, x2, y2; // 시작 좌표, 도착 좌표
-		cin >> x1 >> y1 >> x2 >> y2;
-		int n; // 행성의 개수
-		cin >> n;
-		vector<int> x, y, r; // 행성의 x, y 좌표 및 반지름
-		for (int j = 0; j < n; j++)
-		{
-			int temp1, temp2, temp3;
-			cin >> temp1 >> temp2 >> temp3;
-			x.push_back(temp1);
-			y.push_back(temp2);
-			r.push_back(temp3);
-		}
-		// 시작 좌표나 도착 좌표가 어떤 행성 내에 있으면 반드시 통과해야함
-		int count = 0;
-		for (int j = 0; j < n; j++)
-		{
-			int distance1 = pow(x1 - x[j], 2) + pow(y1 - y[j], 2); // 거리의 제곱
-			int distance2 = pow(x2 - x[j], 2) + pow(y2 - y[j], 2); // 거리의 제곱
-			if (distance1 < pow(r[j], 2) && distance2 > pow(r[j], 2))
-			{
-				count++;
-			}
-			else if (distance1 > pow(r[j], 2) && distance2 < pow(r[j], 2))
-			{
-				count++;
-			}
-		}
-		cout << count << "\n";
+		arr.push_back(i + 1);
 	}
+	vector<int> want;
+	for (int i = 0; i < m; i++)
+	{
+		int temp;
+		cin >> temp;
+		want.push_back(temp);
+	}
+	int countFinal = 0;
+	for (int i = 0; i < m; i++)
+	{
+		vector<int> tempArrL = arr;
+		vector<int> tempArrR = arr;
+		int countL = 0;
+		int countR = 0;
+		while (true)
+		{
+			if (tempArrL[0] == want[i])
+			{
+				break;
+			}
+			MoveLeft(tempArrL);
+			countL++;
+		}
+		while (true)
+		{
+			if (tempArrR[0] == want[i])
+			{
+				break;
+			}
+			MoveRight(tempArrR);
+			countR++;
+		}
+		countFinal += countL > countR ? countR : countL;
+		arr = tempArrL;
+		PopFront(arr);
+	}
+	cout << countFinal;
 }
