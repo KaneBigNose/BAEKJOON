@@ -1,80 +1,39 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 using namespace std;
-
-void MoveLeft(vector<int>& arr)
-{
-	int temp = arr[0];
-	for (int i = 0; i < arr.size() - 1; i++)
-	{
-		arr[i] = arr[i + 1];
-	}
-	*(arr.end() - 1) = temp;
-}
-
-void MoveRight(vector<int>& arr)
-{
-	int temp = *(arr.end() - 1);
-	for (int i = arr.size() - 1; i > 0; i--)
-	{
-		arr[i] = arr[i - 1];
-	}
-	arr[0] = temp;
-}
-
-void PopFront(vector<int>& arr)
-{
-	for (int i = 0; i < arr.size() - 1; i++)
-	{
-		arr[i] = arr[i + 1];
-	}
-	arr.pop_back();
-}
 
 int main()
 {
 	int n, m;
 	cin >> n >> m;
-	vector<int> arr;
+	vector<string> arr;
 	for (int i = 0; i < n; i++)
 	{
-		arr.push_back(i + 1);
-	}
-	vector<int> want;
-	for (int i = 0; i < m; i++)
-	{
-		int temp;
+		string temp;
 		cin >> temp;
-		want.push_back(temp);
+		arr.push_back(temp);
 	}
-	int countFinal = 0;
-	for (int i = 0; i < m; i++)
+	int maxsize = n > m ? m : n;
+	maxsize--;
+	while (true)
 	{
-		vector<int> tempArrL = arr;
-		vector<int> tempArrR = arr;
-		int countL = 0;
-		int countR = 0;
-		while (true)
+		if (maxsize <= 0)
 		{
-			if (tempArrL[0] == want[i])
-			{
-				break;
-			}
-			MoveLeft(tempArrL);
-			countL++;
+			cout << "1";
+			break;
 		}
-		while (true)
+		for (int i = 0; i < n - maxsize; i++)
 		{
-			if (tempArrR[0] == want[i])
+			for (int j = 0; j < m - maxsize; j++)
 			{
-				break;
+				if (arr[i][j] == arr[i][j + maxsize] && arr[i][j + maxsize] == arr[i + maxsize][j] && arr[i + maxsize][j] == arr[i + maxsize][j + maxsize])
+				{
+					cout << pow(maxsize + 1, 2);
+					return 0;
+				}
 			}
-			MoveRight(tempArrR);
-			countR++;
 		}
-		countFinal += countL > countR ? countR : countL;
-		arr = tempArrL;
-		PopFront(arr);
+		maxsize--;
 	}
-	cout << countFinal;
 }
