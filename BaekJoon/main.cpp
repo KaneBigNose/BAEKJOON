@@ -1,17 +1,18 @@
 #include <iostream>
 #include <algorithm>
+#include <vector>
 using namespace std;
 
 int main()
 {
 	string word;
 	cin >> word;
+	sort(word.begin(), word.end(), less<>());
 	bool nomore = false;
 	if (word.size() % 2 == 0)
 	{
 		nomore = true;
 	}
-	sort(word.begin(), word.end(), less<>());
 	for (int i = 0; i < word.size(); i++)
 	{
 		if (count(word.begin(), word.end(), word[i]) % 2 == 1 && nomore == false)
@@ -25,5 +26,83 @@ int main()
 			return 0;
 		}
 	}
-
+	vector<char> half;
+	char remember = '0';
+	if (word.size() % 2 == 0)
+	{
+		for (int i = 0; i < word.size(); i++)
+		{
+			if (find(half.begin(), half.end(), word[i]) == half.end())
+			{
+				if (count(word.begin(), word.end(), word[i]) > 1)
+				{
+					for (int j = 0; j < count(word.begin(), word.end(), word[i]) / 2; j++)
+					{
+						half.push_back(word[i]);
+					}
+				}
+				else
+				{
+					half.push_back(word[i]);
+				}
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i <= word.size(); i++)
+		{
+			if (find(half.begin(), half.end(), word[i]) == half.end())
+			{
+				if (count(word.begin(), word.end(), word[i]) > 1)
+				{
+					if (count(word.begin(), word.end(), word[i]) % 2 == 1)
+					{
+						for (int j = 0; j < count(word.begin(), word.end(), word[i]) / 2; j++)
+						{
+							half.push_back(word[i]);
+						}
+						remember = word[i];
+					}
+					else
+					{
+						for (int j = 0; j < count(word.begin(), word.end(), word[i]) / 2; j++)
+						{
+							half.push_back(word[i]);
+						}
+					}
+				}
+				else
+				{
+					half.push_back(word[i]);
+				}
+			}
+		}
+		if (remember != '0')
+		{
+			half.push_back(remember);
+		}
+	}
+	if (word.size() % 2 == 0)
+	{
+		for (int i = 0; i < half.size(); i++)
+		{
+			cout << half[i];
+		}
+		for (int i = 0; i < half.size(); i++)
+		{
+			cout << half[half.size() - i - 1];
+		}
+	}
+	else
+	{
+		for (int i = 0; i < half.size(); i++)
+		{
+			cout << half[i];
+		}
+		for (int i = word.size() / 2 - 1; i >= 0; i--)
+		{
+			cout << half[i];
+		}
+	}
 }
