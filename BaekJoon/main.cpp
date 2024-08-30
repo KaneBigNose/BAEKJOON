@@ -1,106 +1,71 @@
 #include <iostream>
-#include <algorithm>
 #include <vector>
+#include <algorithm>
 using namespace std;
+
+void stringFomula(string word, int& sum)
+{
+	for (int i = 0; i < word.size(); i++)
+	{
+		if ((int)word[i] >= 48 && (int)word[i] <= 57)
+		{
+			sum += (int)word[i] - 48;
+		}
+	}
+}
+
+void comparator(vector<string>& arr, int i, int j)
+{
+	int sum1 = 0, sum2 = 0;
+	stringFomula(arr[i], sum1);
+	stringFomula(arr[j], sum2);
+	if (sum1 > sum2)
+	{
+		swap(arr[i], arr[j]);
+	}
+	else if (sum1 == sum2)
+	{
+		if (arr[i] > arr[j])
+		{
+			swap(arr[i], arr[j]);
+		}
+	}
+}
 
 int main()
 {
-	string word;
-	cin >> word;
-	sort(word.begin(), word.end(), less<>());
-	bool nomore = false;
-	if (word.size() % 2 == 0)
+	int n;
+	cin >> n;
+	vector<string> arr;
+	for (int i = 0; i < n; i++)
 	{
-		nomore = true;
+		string temp;
+		cin >> temp;
+		arr.push_back(temp);
 	}
-	for (int i = 0; i < word.size(); i++)
+	for (int i = 0; i < arr.size() - 1; i++)
 	{
-		if (count(word.begin(), word.end(), word[i]) % 2 == 1 && nomore == false)
+		for (int j = i; j < arr.size(); j++)
 		{
-			nomore = true;
-			i += count(word.begin(), word.end(), word[i]) - 1;
-		}
-		else if (count(word.begin(), word.end(), word[i]) % 2 == 1 && nomore == true)
-		{
-			cout << "I'm Sorry Hansoo";
-			return 0;
-		}
-	}
-	vector<char> half;
-	if (word.size() % 2 == 0)
-	{
-		for (int i = 0; i < word.size(); i++)
-		{
-			if (find(half.begin(), half.end(), word[i]) == half.end())
+			if (arr[i].size() > arr[j].size())
 			{
-				if (count(word.begin(), word.end(), word[i]) > 1)
-				{
-					for (int j = 0; j < count(word.begin(), word.end(), word[i]) / 2; j++)
-					{
-						half.push_back(word[i]);
-					}
-				}
-				else
-				{
-					half.push_back(word[i]);
-				}
+				swap(arr[i], arr[j]);
 			}
 		}
 	}
-	else
+	for (int i = 0; i < arr.size() - 1; i++)
 	{
-		char rem;
-		for (int i = 0; i <= word.size(); i++)
+		for (int j = i + 1; j < arr.size(); j++)
 		{
-			if (find(half.begin(), half.end(), word[i]) == half.end())
+			if (arr[i].size() == arr[j].size())
 			{
-				int num = count(word.begin(), word.end(), word[i]);
-				if (num > 1)
-				{
-					if (num % 2 == 1)
-					{
-						for (int j = 0; j < num / 2; j++)
-						{
-							half.push_back(word[i]);
-						}
-						rem = word[i];
-					}
-					else
-					{
-						for (int j = 0; j < num / 2; j++)
-						{
-							half.push_back(word[i]);
-						}
-					}
-				}
-				else if (num == 1)
-				{
-					rem = word[i];
-				}
+				comparator(arr, i, j);
 			}
 		}
-		half.push_back(rem);
 	}
-	if (word.size() % 2 == 0)
+	for (int i = 0; i < arr.size() - 1; i++)
 	{
-		for (int i = 0; i < half.size(); i++)
-		{
-			cout << half[i];
-		}
-		for (int i = 0; i < half.size(); i++)
-		{
-			cout << half[half.size() - i - 1];
-		}
+		cout << arr[i] << "\n";
 	}
-	else
-	{
-		for (int i = 0; i < half.size(); i++)
-		{
-			cout << half[i];
-		}
-		for (int i = word.size() / 2 - 1; i >= 0; i--)
-		{
-			cout << half[i];
-		}
-	}
+	cout << *(arr.end() - 1);
 }
