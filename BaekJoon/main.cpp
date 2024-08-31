@@ -16,26 +16,28 @@ int main()
 	}
 	sort(arr.begin(), arr.end(), less<>());
 	int countT = 0;
-	int now = 0;
-	while(true)
+	for (int i = 0; i < n; i++)
 	{
-		for (int i = now + 1; i < n; i++)
+		for (int j = i; j < n; j++)
 		{
-			if (arr[i] - arr[now] + 1 > l)
+			if (arr[i] + l - 0.5 < arr[j] + 0.5)
 			{
 				countT++;
-				now = i;
+				if (i != j)
+				{
+					i = j - 1;
+				}
+				else
+				{
+					i = j;
+				}
 				break;
 			}
-			if (arr[now + 1] - arr[now] + 1 <= l && i == n - 1)
+			if (j == n - 1)
 			{
 				cout << ++countT;
 				return 0;
 			}
-		}
-		if (now >= n - 1)
-		{
-			break;
 		}
 	}
 	cout << countT;
