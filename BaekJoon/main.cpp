@@ -1,44 +1,86 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
 
 int main()
 {
-	int n, l;
-	cin >> n >> l;
-	vector<int> arr;
-	for (int i = 0; i < n; i++)
+	unsigned long long x, y;
+	int w, s;
+	cin >> x >> y >> w >> s;
+	bool cross;
+	unsigned long long time = 0;
+	if (w * 2 >= s)
 	{
-		int temp;
-		cin >> temp;
-		arr.push_back(temp);
+		cross = true;
 	}
-	sort(arr.begin(), arr.end(), less<>());
-	int countT = 0;
-	for (int i = 0; i < n; i++)
+	else
 	{
-		for (int j = i; j < n; j++)
+		cross = false;
+	}
+	if (x > y)
+	{
+		if (cross == true)
 		{
-			if (arr[i] + l - 0.5 < arr[j] + 0.5)
+			time += s * y;
+		}
+		else
+		{
+			time += w * 2 * y;
+		}
+		if ((x - y) % 2 == 0)
+		{
+			if ((x - y) * s < (x - y) * w)
 			{
-				countT++;
-				if (i != j)
-				{
-					i = j - 1;
-				}
-				else
-				{
-					i = j;
-				}
-				break;
+				time += (x - y) * s;
 			}
-			if (j == n - 1)
+			else
 			{
-				cout << ++countT;
-				return 0;
+				time += (x - y) * w;
+			}
+		}
+		else
+		{
+			if ((x - y - 1) * s + w < (x - y) * w)
+			{
+				time += (x - y - 1) * s + w;
+			}
+			else
+			{
+				time += (x - y) * w;
 			}
 		}
 	}
-	cout << countT;
+	else
+	{
+		if (cross == true)
+		{
+			time += s * x;
+		}
+		else
+		{
+			time += w * 2 * x;
+		}
+		if ((y - x) % 2 == 0)
+		{
+			if ((y - x) * s < (y - x) * w)
+			{
+				time += (y - x) * s;
+			}
+			else
+			{
+				time += (y - x) * w;
+			}
+		}
+		else
+		{
+			if ((y - x - 1) * s + w < (y - x) * w)
+			{
+				time += (y - x - 1) * s + w;
+			}
+			else
+			{
+				time += (y - x) * w;
+			}
+		}
+	}
+	cout << time;
 }
