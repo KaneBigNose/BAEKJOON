@@ -1,71 +1,57 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
-
-void searchBC(vector<bool>* check, vector<int>* arr, int a, int b, int m, int n)
-{
-	arr[a][b] = 0;
-	check[a][b] = true;
-	if (a - 1 >= 0 && arr[a - 1][b] == 1 && check[a - 1][b] == false) // 북
-	{
-		searchBC(check, arr, a - 1, b, m, n);
-	}
-	if (b + 1 < m && arr[a][b + 1] == 1 && check[a][b + 1] == false) // 동
-	{
-		searchBC(check, arr, a, b + 1, m, n);
-	}
-	if (a + 1 < n && arr[a + 1][b] == 1 && check[a + 1][b] == false) // 남
-	{
-		searchBC(check, arr, a + 1, b, m, n);
-	}
-	if (b - 1 >= 0 && arr[a][b - 1] == 1 && check[a][b - 1] == false) // 서
-	{
-		searchBC(check, arr, a, b - 1, m, n);
-	}
-}
 
 int main()
 {
-	int t;
-	cin >> t;
-	for (int i = 0; i < t; i++)
+	int n;
+	cin >> n;
+	vector<char>* arr = new vector<char>[n]; // 친구 리스트
+	for (int i = 0; i < n; i++)
 	{
-		int m, n, k; // 가로, 세로, 개수
-		cin >> m >> n >> k;
-		vector<bool>* check = new vector<bool>[n];
-		vector<int>* arr = new vector<int>[n];
-		int bugcount = 0;
-		for (int a = 0; a < n; a++)
+		string temp;
+		cin >> temp;
+		for (int j = 0; j < temp.size(); j++)
 		{
-			for (int b = 0; b < m; b++)
+			if (i != j && temp[j] == 'Y')
 			{
-				check[a].push_back(false);
-			}
-		}
-		for (int a = 0; a < n; a++)
-		{
-			for (int b = 0; b < m; b++)
-			{
-				arr[a].push_back(0);
-			}
-		}
-		for (int j = 0; j < k; j++)
-		{
-			int x, y;
-			cin >> x >> y;
-			arr[y][x] = 1;
-		}
-		for (int a = 0; a < n; a++)
-		{
-			for (int b = 0; b < m; b++)
-			{
-				if (arr[a][b] == 1 && check[a][b] == false)
+				if (find(arr[i].begin(), arr[i].end(), (char)('A' + j)) == arr[i].end())
 				{
-					searchBC(check, arr, a, b, m, n);
-					bugcount++;
+					arr[i].push_back((char)('A' + j));
+				}
+				if (find(arr[j].begin(), arr[j].end(), (char)('A' + i)) == arr[j].end())
+				{
+					arr[j].push_back((char)('A' + i));
 				}
 			}
 		}
-		cout << bugcount << "\n";
 	}
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < arr[i].size(); j++)
+		{
+			for (int k = 0; k < arr[j].size(); k++)
+			{
+				if (find(arr[i].begin(), arr[i].end(), arr[j][k]) == arr[i].end())
+				{
+					arr[i].push_back(arr[j][k]);
+				}
+			}
+		}
+	}
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < arr[i].size(); j++)
+		{
+			cout << arr[i][j];
+		}
+		cout << "\n";
+	}
+	int* num = new int[n]; // 친구 인원 표
+	for (int i = 0; i < n; i++)
+	{
+		num[i] = arr[i].size();
+	}
+	cout << *max_element(num, num + n);
 }
